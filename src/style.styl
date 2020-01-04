@@ -16,13 +16,22 @@
   font-weight: bold
   font-style: normal
 
+$ROOT_FONT_SIZE = 32px
+$CANONIC_SCREEN_WIDTH = 1440px
+
+pxToRem(px)
+  (px / $ROOT_FONT_SIZE) rem
+
+html
+  font-size: ($ROOT_FONT_SIZE / $CANONIC_SCREEN_WIDTH * 100) vw
+
 html,
 body
-  font: 14px/1.21 'Monument Grotesk', arial, sans-serif
+  font-family: 'Monument Grotesk', arial, sans-serif
   font-weight: normal
 
 body
-  padding: 150px 25px 25px
+  padding: pxToRem(150) pxToRem(25) pxToRem(25)
 
 .center
   text-align: center
@@ -34,25 +43,25 @@ body
   text-transform: uppercase
 
 .xxl
-  font-size: 90px
+  font-size: pxToRem(90)
   font-weight: normal
   line-height: 84.4%
   text-transform: uppercase
 
 .xl
-  font-size: 64px
+  font-size: pxToRem(64)
   font-weight: normal
   line-height:  84.4%
   text-transform: uppercase
 
 .l
-  font-size: 45px
+  font-size: pxToRem(45)
   font-weight: normal
   line-height: 84.4%
   text-transform: uppercase
 
 .m
-  font-size: 32px
+  font-size: pxToRem(32)
   font-weight: bold
   line-height: 84.4%
 
@@ -60,7 +69,7 @@ body
   display: block
 
 .essay + .essay
-  margin-top: 96px
+  margin-top: pxToRem(96)
 
 .moss
   color: #255823
@@ -76,16 +85,16 @@ body
 
 header
   position: fixed
-  top: 10px
+  top: pxToRem(10)
   left: 0
   width: 100%
   display: flex
   justify-content: space-between
   align-items: center
-  padding: 0 25px
+  padding: 0 pxToRem(25)
 
 main
-  max-width: 1187px
+  max-width: pxToRem(1187)
   margin: 0 auto
 
 h2
@@ -98,16 +107,16 @@ a h2:after
   content: '↗'
 
 footer
-  margin-top: 200px
+  margin-top: pxToRem(200)
 
 .footer-top
   display: flex
   justify-content: space-between
-  margin-bottom: 173px
+  margin-bottom: pxToRem(173)
 
 .credits > div + div
-  margin-top: 38px
+  margin-top: pxToRem(38)
 
 .credits a
-  margin-top: 14px
+  margin-top: pxToRem(14)
   display: block
