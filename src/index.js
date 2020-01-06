@@ -1,5 +1,6 @@
 import "defaults.css";
 import "./style.styl";
+import "array-flat-polyfill";
 import { Component } from "preact";
 
 const essays = [
@@ -61,9 +62,80 @@ class Essay extends Component {
 }
 
 export default class App extends Component {
-  render() {
+  state = {
+    texts: [],
+    excerpt: "The increasingly progressive treatment of text gave birth to many new literary movements, which undoubte".split(
+      ""
+    ),
+    lastExcerptCharIndex: -1,
+    interval: null
+  };
+
+  typeExcerpt = () => {
+    this.setState({
+      interval: window.setInterval(() => {
+        if (this.state.lastExcerptCharIndex < this.state.excerpt.length - 1) {
+          this.setState({
+            lastExcerptCharIndex: this.state.lastExcerptCharIndex + 1
+          });
+        } else {
+          window.clearInterval(this.state.interval);
+          this.setState({ interval: null });
+          this.detypeExcerpt();
+        }
+      }, 50)
+    });
+  };
+
+  detypeExcerpt = () => {
+    this.setState({
+      interval: window.setInterval(() => {
+        if (this.state.lastExcerptCharIndex >= 0) {
+          this.setState({
+            lastExcerptCharIndex: this.state.lastExcerptCharIndex - 1
+          });
+        } else {
+          window.clearInterval(this.state.interval);
+          this.setState({ interval: null });
+          this.typeExcerpt();
+        }
+      }, 25)
+    });
+  };
+
+  componentDidMount() {
+    this.typeExcerpt();
+    fetch("https://api.are.na/v2/channels/critical-digest").then(response => {
+      response.json().then(content => {
+        Promise.all(
+          content.contents.map(c =>
+            fetch(`https://api.are.na/v2/channels/${c.slug}`)
+              .then(cj => cj.json())
+              .then(channelCont => {
+                return channelCont.contents
+                  ? channelCont.contents.filter(ct => ct.class === "Text")
+                  : [];
+              })
+          )
+        ).then(texts => {
+          this.setState({
+            texts: texts.flat(1)
+          });
+        });
+      });
+    });
+  }
+
+  render(props, { excerpt, lastExcerptCharIndex }) {
     return (
       <div>
+        <div class="excerpts swamp m">
+          <div>
+            {excerpt.map((char, index) => (
+              <span style={{ opacity: index <= lastExcerptCharIndex ? 1 : 0 }}>{char}</span>
+            ))}
+          </div>
+        </div>
         <header class="m">
           <a>About</a>
           <h1 class="xl">

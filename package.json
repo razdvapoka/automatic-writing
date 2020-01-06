@@ -27,6 +27,7 @@
     "stylus-loader": "^3.0.2"
   },
   "dependencies": {
+    "array-flat-polyfill": "^1.0.1",
     "defaults.css": "^1.2.0",
     "preact": "^10.1.0",
     "preact-render-to-string": "^5.1.2"
