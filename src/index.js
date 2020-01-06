@@ -68,11 +68,13 @@ export default class App extends Component {
       ""
     ),
     lastExcerptCharIndex: -1,
-    interval: null
+    interval: null,
+    lastExcerptColor: null
   };
 
   typeExcerpt = () => {
     this.setState({
+      lastExcerptColor: randomArrItem(colors.filter(c => c !== this.state.lastExcerptCharIndex)),
       interval: window.setInterval(() => {
         if (this.state.lastExcerptCharIndex < this.state.excerpt.length - 1) {
           this.setState({
@@ -83,7 +85,7 @@ export default class App extends Component {
           this.setState({ interval: null });
           this.detypeExcerpt();
         }
-      }, 50)
+      }, 20)
     });
   };
 
@@ -99,7 +101,7 @@ export default class App extends Component {
           this.setState({ interval: null });
           this.typeExcerpt();
         }
-      }, 25)
+      }, 10)
     });
   };
 
@@ -129,8 +131,8 @@ export default class App extends Component {
   render(props, { excerpt, lastExcerptCharIndex }) {
     return (
       <div>
-        <div class="excerpts swamp m">
-          <div>
+        <div class="excerpts m">
+          <div class={this.state.lastExcerptColor}>
             {excerpt.map((char, index) => (
               <span style={{ opacity: index <= lastExcerptCharIndex ? 1 : 0 }}>{char}</span>
             ))}
