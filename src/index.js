@@ -64,29 +64,37 @@ class Essay extends Component {
 export default class App extends Component {
   state = {
     texts: [],
-    excerpt: "The increasingly progressive treatment of text gave birth to many new literary movements, which undoubte".split(
-      ""
-    ),
+    excerpt: [],
     lastExcerptCharIndex: -1,
     interval: null,
     lastExcerptColor: null
   };
 
   typeExcerpt = () => {
-    this.setState({
-      lastExcerptColor: randomArrItem(colors.filter(c => c !== this.state.lastExcerptCharIndex)),
-      interval: window.setInterval(() => {
-        if (this.state.lastExcerptCharIndex < this.state.excerpt.length - 1) {
-          this.setState({
-            lastExcerptCharIndex: this.state.lastExcerptCharIndex + 1
-          });
-        } else {
-          window.clearInterval(this.state.interval);
-          this.setState({ interval: null });
-          this.detypeExcerpt();
-        }
-      }, 20)
-    });
+    const splitRegex = /[^\.!\?]+[\.!\?]+/g;
+    const text = randomArrItem(this.state.texts);
+    const sentences = text.content.match(splitRegex);
+    const filteredSentences = sentences && sentences.filter(s => s.split(/\s/g).length > 1);
+    if (filteredSentences && filteredSentences.length > 0) {
+      const excerpt = randomArrItem(filteredSentences);
+      this.setState({
+        lastExcerptColor: randomArrItem(colors.filter(c => c !== this.state.lastExcerptCharIndex)),
+        excerpt: excerpt.split(""),
+        interval: window.setInterval(() => {
+          if (this.state.lastExcerptCharIndex < excerpt.length - 1) {
+            this.setState({
+              lastExcerptCharIndex: this.state.lastExcerptCharIndex + 1
+            });
+          } else {
+            window.clearInterval(this.state.interval);
+            this.setState({ interval: null });
+            this.detypeExcerpt();
+          }
+        }, 20)
+      });
+    } else {
+      this.typeExcerpt();
+    }
   };
 
   detypeExcerpt = () => {
@@ -106,7 +114,6 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    this.typeExcerpt();
     fetch("https://api.are.na/v2/channels/critical-digest").then(response => {
       response.json().then(content => {
         Promise.all(
@@ -120,9 +127,12 @@ export default class App extends Component {
               })
           )
         ).then(texts => {
-          this.setState({
-            texts: texts.flat(1)
-          });
+          this.setState(
+            {
+              texts: texts.flat(1)
+            },
+            this.typeExcerpt
+          );
         });
       });
     });
