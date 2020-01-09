@@ -12,67 +12,67 @@ const essays = [
   },
   {
     author: "Nadezhda Vorobieva",
-    title: `Loading bars:<br/>designing wait`,
+    title: `Loading bars:<br/><span class="amour">d</span>esigning wait`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
     author: "Lyudmila Petrova",
-    title: `Militant aesthetics<br/>and group identities`,
+    title: `Militant <span class="amour">a</span>esthetics<br/>and group identities`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
     author: "Valeriia Ivanova",
-    title: `Mimicry, transparency<br/>and repetition`,
+    title: `<span class="amour">M</span>imicry, transparency<br/>and repetition`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
     author: "Anastasia Shmeleva",
-    title: `Design for play:<br/>from physical to&nbsp;digital environments`,
+    title: `Design for <span class="amour">p</span>lay:<br/>from physical to&nbsp;digital environments`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
     author: "Maria Kharmandarian",
-    title: `The future<br/>of language`,
+    title: `The <span class="amour">f</span>uture<br/>of language`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
     author: "Elizaveta Stolyarova",
-    title: `Silicon Valley ideology and reception<br/>of modernism in web design`,
+    title: `Silicon <span class="amour">V</span>alley ideology and reception<br/>of modernism in web design`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
     author: "Alexandra Kravtsova",
-    title: `3 cases of propaganda`,
+    title: `3 cases of <span class="amour">p</span>ropaganda`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
     author: "Alisa Kharas",
-    title: `New types of written communication`,
+    title: `New types of written <span class="amour">c</span>ommunication`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
     author: "Maria Khegay",
-    title: `The role of social media in behavioral changes`,
+    title: `The role of social media in <span class="amour">b</span>ehavioral changes`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
     author: "Ekaterina Slobodskaya",
-    title: `Irony and design:<br/>subvertising aesthetics`,
+    title: `Irony and design:<br/><span class="amour">s</span>ubvertising aesthetics`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
     author: "Eva Chudina",
-    title: `Make-up art:<br/>from beauty to body modification`,
+    title: `Make-up <span class="amour">a</span>rt:<br/>from beauty to body modification`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   }
