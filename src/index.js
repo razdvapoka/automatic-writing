@@ -185,7 +185,7 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    this.revealEssays();
+    window.setTimeout(this.revealEssays, 1750);
     fetch("https://api.are.na/v2/channels/critical-digest").then(response => {
       response.json().then(content => {
         Promise.all(
@@ -222,7 +222,7 @@ export default class App extends Component {
         </div>
         <header class="xs uppercase">
           <a>About</a>
-          <h1 class="s">
+          <h1 class="s name">
             Automatic <span class="amour">W</span>riting
           </h1>
           <a>Readings</a>

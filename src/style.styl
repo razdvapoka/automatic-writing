@@ -106,6 +106,33 @@ body
   +mobile()
     margin-top: pxToRem(75)
 
+.name
+  position: fixed
+  left: 50%
+  transform: translate(-50%, 45vh) scale(3.75)
+  animation: nameAppear 1s ease-in forwards 1s
+  +mobile()
+    transform: translate(-50%, 45vh) scale(2.33);
+    animation: nameAppearM 1s ease-in forwards 1s
+
+@keyframes nameAppear {
+  from {
+    transform: translate(-50%, 45vh) scale(3.75);
+  }
+  to {
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes nameAppearM {
+  from {
+    transform: translate(-50%, 45vh) scale(2.33);
+  }
+  to {
+    transform: translate(-50%, 0);
+  }
+}
+
 .moss
   color: #255823
 
@@ -140,7 +167,8 @@ a
   cursor: pointer
 
 a h2:after
-  content: '   ↗'
+  content: '  ↗'
+  font-feature-settings: "case"
 
 footer
   margin-top: pxToRem(200)
