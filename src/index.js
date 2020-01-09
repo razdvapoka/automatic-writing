@@ -87,7 +87,7 @@ class Essay extends Component {
     isHovered: false
   };
 
-  render({ essay }, { color, isHovered }) {
+  render({ essay, ...rest }, { color, isHovered }) {
     return (
       <a
         class="essay"
@@ -102,6 +102,7 @@ class Essay extends Component {
             isHovered: false
           });
         }}
+        {...rest}
       >
         <div class="l" style={{ marginLeft: essay.shift }}>
           {essay.author}
@@ -121,7 +122,9 @@ export default class App extends Component {
     excerpt: [],
     lastExcerptCharIndex: -1,
     interval: null,
-    lastExcerptColor: null
+    lastExcerptColor: null,
+    lastVisibleEssayIndex: -1,
+    revealInterval: null
   };
 
   typeExcerpt = () => {
@@ -167,7 +170,22 @@ export default class App extends Component {
     });
   };
 
+  revealEssays = () => {
+    this.setState({
+      revealInterval: window.setInterval(() => {
+        if (this.state.lastVisibleEssayIndex < essays.length) {
+          this.setState({
+            lastVisibleEssayIndex: this.state.lastVisibleEssayIndex + 1
+          });
+        } else {
+          window.clearInterval(this.state.revealInterval);
+        }
+      }, 350)
+    });
+  };
+
   componentDidMount() {
+    this.revealEssays();
     fetch("https://api.are.na/v2/channels/critical-digest").then(response => {
       response.json().then(content => {
         Promise.all(
@@ -192,7 +210,7 @@ export default class App extends Component {
     });
   }
 
-  render(props, { excerpt, lastExcerptCharIndex }) {
+  render(props, { excerpt, lastExcerptCharIndex, lastVisibleEssayIndex }) {
     return (
       <div>
         <div class="excerpts m">
@@ -211,7 +229,11 @@ export default class App extends Component {
         </header>
         <main>
           {essays.map((essay, index) => (
-            <Essay essay={essay} key={index} />
+            <Essay
+              essay={essay}
+              key={index}
+              style={{ opacity: index <= lastVisibleEssayIndex ? 1 : 0 }}
+            />
           ))}
         </main>
         <footer class="xs uppercase">
