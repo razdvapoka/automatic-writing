@@ -80,6 +80,7 @@ const essays = [
 
 const colors = ["swamp", "blood", "witch", "moss"];
 const randomArrItem = arr => arr[Math.floor(Math.random() * arr.length)];
+const wait = (ms) => new Promise(resolve => window.setTimeout(resolve, ms));
 
 class Essay extends Component {
   state = {
@@ -189,7 +190,7 @@ export default class App extends Component {
     fetch("https://api.are.na/v2/channels/critical-digest").then(response => {
       response.json().then(content => {
         Promise.all(
-          content.contents.map(c =>
+          [...content.contents.map(c =>
             fetch(`https://api.are.na/v2/channels/${c.slug}`)
               .then(cj => cj.json())
               .then(channelCont => {
@@ -197,7 +198,7 @@ export default class App extends Component {
                   ? channelCont.contents.filter(ct => ct.class === "Text")
                   : [];
               })
-          )
+          ), wait(2300)]
         ).then(texts => {
           this.setState(
             {
