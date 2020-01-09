@@ -5,20 +5,74 @@ import { Component } from "preact";
 
 const essays = [
   {
-    author: "Maria Kharmandaryan",
-    title: `The paradoxical <span class="amour">n</span>ature of visual language`,
+    author: "Irina Evseenko",
+    title: `Form follows 'X':<br/><span class="amour">a</span>nalysis of a trope`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
-    author: "Maria Kharmandaryan",
-    title: `design and <span class="amour">p</span>lay:<br/> childhood reinvented`,
+    author: "Nadezhda Vorobieva",
+    title: `Loading bars:<br/>designing wait`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },
   {
-    author: "Maria Kharmandaryan",
-    title: `form follows x:<br/><span class="amour">a</span>nalysis of a trope`,
+    author: "Lyudmila Petrova",
+    title: `Militant aesthetics<br/>and group identities`,
+    slug: "essay-1",
+    shift: `${Math.floor(Math.random() * 50)}%`
+  },
+  {
+    author: "Valeriia Ivanova",
+    title: `Mimicry, transparency<br/>and repetition`,
+    slug: "essay-1",
+    shift: `${Math.floor(Math.random() * 50)}%`
+  },
+  {
+    author: "Anastasia Shmeleva",
+    title: `Design for play:<br/>from physical to digital environments`,
+    slug: "essay-1",
+    shift: `${Math.floor(Math.random() * 50)}%`
+  },
+  {
+    author: "Maria Kharmandarian",
+    title: `The future<br/>of language`,
+    slug: "essay-1",
+    shift: `${Math.floor(Math.random() * 50)}%`
+  },
+  {
+    author: "Elizaveta Stolyarova",
+    title: `Silicon Valley ideology and reception<br/>of modernism in web design`,
+    slug: "essay-1",
+    shift: `${Math.floor(Math.random() * 50)}%`
+  },
+  {
+    author: "Alexandra Kravtsova",
+    title: `3 cases of propaganda`,
+    slug: "essay-1",
+    shift: `${Math.floor(Math.random() * 50)}%`
+  },
+  {
+    author: "Alisa Kharas",
+    title: `New types of written communication`,
+    slug: "essay-1",
+    shift: `${Math.floor(Math.random() * 50)}%`
+  },
+  {
+    author: "Maria Khegay",
+    title: `The role of social media in behavioral changes`,
+    slug: "essay-1",
+    shift: `${Math.floor(Math.random() * 50)}%`
+  },
+  {
+    author: "Ekaterina Slobodskaya",
+    title: `Irony and design:<br/>subvertising aesthetics`,
+    slug: "essay-1",
+    shift: `${Math.floor(Math.random() * 50)}%`
+  },
+  {
+    author: "Eva Chudina",
+    title: `Make-up art:<br/>from beauty to body modification`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   }
@@ -88,7 +142,7 @@ export default class App extends Component {
           } else {
             window.clearInterval(this.state.interval);
             this.setState({ interval: null });
-            this.detypeExcerpt();
+            window.setTimeout(this.detypeExcerpt, 5000);
           }
         }, 20)
       });
@@ -148,9 +202,9 @@ export default class App extends Component {
             ))}
           </div>
         </div>
-        <header class="m">
+        <header class="xs uppercase">
           <a>About</a>
-          <h1 class="xl">
+          <h1 class="s">
             Automatic <span class="amour">W</span>riting
           </h1>
           <a>Readings</a>
@@ -160,25 +214,21 @@ export default class App extends Component {
             <Essay essay={essay} key={index} />
           ))}
         </main>
-        <footer class="l">
-          <div class="footer-top">
-            <div>Autumn Semester 19/20</div>
-            <div>C&CS module</div>
-            <div>BHSAD (Britanka)</div>
+        <footer class="xs uppercase">
+          <div>Autumn Semester 19/20</div>
+          <div>C&CS module</div>
+          <div>BHSAD (Britanka)</div>
+          <div>
+            developed by&nbsp;
+            <a href="https://sergeyzakharov.dev" target="_blank">
+              Sergey Zakharov
+            </a>
           </div>
-          <div class="credits center">
-            <div>
-              <div>development</div>
-              <a href="https://sergeyzakharov.dev" target="_blank">
-                Sergey Zakharov
-              </a>
-            </div>
-            <div>
-              <div>Taught and Designed by</div>
-              <a href="https://ermolava.co" target="_blank">
-                Tanya Ermolaeva
-              </a>
-            </div>
+          <div>
+            Taught and Designed by&nbsp;
+            <a href="https://ermolaeva.co" target="_blank">
+              Tanya Ermolaeva
+            </a>
           </div>
         </footer>
       </div>
