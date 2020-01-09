@@ -30,7 +30,7 @@ const essays = [
   },
   {
     author: "Anastasia Shmeleva",
-    title: `Design for play:<br/>from physical to digital environments`,
+    title: `Design for play:<br/>from physical to&nbsp;digital environments`,
     slug: "essay-1",
     shift: `${Math.floor(Math.random() * 50)}%`
   },

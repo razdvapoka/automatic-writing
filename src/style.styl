@@ -18,12 +18,20 @@
 
 $ROOT_FONT_SIZE = 32px
 $CANONIC_SCREEN_WIDTH = 1440px
+$CANONIC_SCREEN_WIDTH_M = 375px
+$MOBILE_BP = 600px
+
+mobile()
+  @media (max-width: $MOBILE_BP)
+    {block}
 
 pxToRem(px)
   (px / $ROOT_FONT_SIZE) rem
 
 html
   font-size: ($ROOT_FONT_SIZE / $CANONIC_SCREEN_WIDTH * 100) vw
+  +mobile()
+    font-size: ($ROOT_FONT_SIZE / $CANONIC_SCREEN_WIDTH_M * 100) vw
 
 html,
 body
@@ -32,6 +40,8 @@ body
 
 body
   padding: pxToRem(150) pxToRem(25) pxToRem(25)
+  +mobile()
+    padding: pxToRem(75) pxToRem(14) pxToRem(25)
 
 .center
   text-align: center
@@ -47,6 +57,8 @@ body
   font-weight: normal
   line-height: 84.4%
   text-transform: uppercase
+  +mobile()
+    font-size: pxToRem(28)
 
 .xl
   font-size: pxToRem(64)
@@ -59,27 +71,39 @@ body
   font-weight: normal
   line-height: 84.4%
   text-transform: uppercase
+  +mobile()
+    font-size: pxToRem(16)
 
 .m
   font-size: pxToRem(32)
   font-weight: bold
   line-height: 84.4%
+  +mobile()
+    font-size: pxToRem(16)
 
 .s
   font-size: pxToRem(24)
   font-weight: normal
   line-height: 84.4%
+  +mobile()
+    font-size: pxToRem(12)
+    line-height: 1
 
 .xs
   font-size: pxToRem(16)
   font-weight: normal
   line-height: 84.4%
+  +mobile()
+    font-size: pxToRem(12)
+    line-height: 1
 
 .essay
   display: block
 
 .essay + .essay
   margin-top: pxToRem(150)
+  +mobile()
+    margin-top: pxToRem(75)
 
 .moss
   color: #255823
@@ -123,18 +147,10 @@ footer
   justify-content: space-between
   a
     text-decoration: underline !important
-
-.footer-top
-  display: flex
-  justify-content: space-between
-  margin-bottom: pxToRem(173)
-
-.credits > div + div
-  margin-top: pxToRem(38)
-
-.credits a
-  margin-top: pxToRem(14)
-  display: block
+  +mobile()
+    flex-direction: column
+    & > * + *
+      margin-top: pxToRem(10)
 
 .excerpts
   position: fixed
@@ -144,3 +160,10 @@ footer
   pointer-events: none
   text-align: center
   padding: 0 pxToRem(100)
+  +mobile()
+    bottom: pxToRem(0)
+    left: pxToRem(20)
+    padding: 0
+    width: 90vh
+    transform: rotate(-90deg)
+    transform-origin: left top
