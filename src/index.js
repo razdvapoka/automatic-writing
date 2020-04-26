@@ -1,7 +1,15 @@
 import "defaults.css";
+import "./tailwind.css";
 import "./style.styl";
 import "array-flat-polyfill";
+import { memo } from "preact/compat";
+import { arrayShuffle } from "@adriantombu/array-shuffle";
 import { Component } from "preact";
+import Intro from "./components/intro";
+import Excerpts from "./components/excerpts";
+import data from "../assets/data.json";
+
+const SPLIT_REGEX = /[^\.!\?]+[\.!\?]+/g;
 
 const essays = [
   {
@@ -78,119 +86,28 @@ const essays = [
   }
 ];
 
-const colors = ["swamp", "blood", "witch", "moss"];
-const randomArrItem = arr => arr[Math.floor(Math.random() * arr.length)];
-const wait = (ms) => new Promise(resolve => window.setTimeout(resolve, ms));
-
-class Essay extends Component {
-  state = {
-    color: null,
-    isHovered: false
-  };
-
-  render({ essay, ...rest }, { color, isHovered }) {
-    return (
-      <a
-        class="essay"
-        onMouseEnter={() => {
-          this.setState({
-            isHovered: true,
-            color: randomArrItem(colors.filter(c => c !== color))
-          });
-        }}
-        onMouseLeave={() => {
-          this.setState({
-            isHovered: false
-          });
-        }}
-        {...rest}
-      >
-        <div class="l" style={{ marginLeft: essay.shift }}>
-          {essay.author}
-        </div>
-        <h2
-          class={`xxl center ${isHovered ? color : ""}`}
-          dangerouslySetInnerHTML={{ __html: essay.title }}
-        />
-      </a>
-    );
-  }
-}
+const textsToSentences = texts => {
+  return texts
+    .map(t => t.content)
+    .join("")
+    .match(SPLIT_REGEX)
+    .filter(s => s.split(/\s/g).length > 1)
+    .map(s => s.split(""));
+};
 
 export default class App extends Component {
   state = {
-    texts: [],
-    excerpt: [],
-    lastExcerptCharIndex: -1,
-    interval: null,
-    lastExcerptColor: null,
-    lastVisibleEssayIndex: -1,
-    revealInterval: null
-  };
-
-  typeExcerpt = () => {
-    const splitRegex = /[^\.!\?]+[\.!\?]+/g;
-    const text = randomArrItem(this.state.texts);
-    const sentences = text.content.match(splitRegex);
-    const filteredSentences = sentences && sentences.filter(s => s.split(/\s/g).length > 1);
-    if (filteredSentences && filteredSentences.length > 0) {
-      const excerpt = randomArrItem(filteredSentences);
-      this.setState({
-        lastExcerptColor: randomArrItem(colors.filter(c => c !== this.state.lastExcerptCharIndex)),
-        excerpt: excerpt.split(""),
-        interval: window.setInterval(() => {
-          if (this.state.lastExcerptCharIndex < excerpt.length - 1) {
-            this.setState({
-              lastExcerptCharIndex: this.state.lastExcerptCharIndex + 1
-            });
-          } else {
-            window.clearInterval(this.state.interval);
-            this.setState({ interval: null });
-            window.setTimeout(this.detypeExcerpt, 5000);
-          }
-        }, 20)
-      });
-    } else {
-      this.typeExcerpt();
-    }
-  };
-
-  detypeExcerpt = () => {
-    this.setState({
-      interval: window.setInterval(() => {
-        if (this.state.lastExcerptCharIndex >= 0) {
-          this.setState({
-            lastExcerptCharIndex: this.state.lastExcerptCharIndex - 1
-          });
-        } else {
-          window.clearInterval(this.state.interval);
-          this.setState({ interval: null });
-          this.typeExcerpt();
-        }
-      }, 10)
-    });
-  };
-
-  revealEssays = () => {
-    this.setState({
-      revealInterval: window.setInterval(() => {
-        if (this.state.lastVisibleEssayIndex < essays.length) {
-          this.setState({
-            lastVisibleEssayIndex: this.state.lastVisibleEssayIndex + 1
-          });
-        } else {
-          window.clearInterval(this.state.revealInterval);
-        }
-      }, 350)
-    });
+    sentences: null
   };
 
   componentDidMount() {
-    window.setTimeout(this.revealEssays, 1750);
+    this.setState({ sentences: data.sentences.map(s => s.split("")) });
+
+    /*
     fetch("https://api.are.na/v2/channels/critical-digest").then(response => {
       response.json().then(content => {
-        Promise.all(
-          [...content.contents.map(c =>
+        Promise.all([
+          ...content.contents.map(c =>
             fetch(`https://api.are.na/v2/channels/${c.slug}`)
               .then(cj => cj.json())
               .then(channelCont => {
@@ -198,62 +115,29 @@ export default class App extends Component {
                   ? channelCont.contents.filter(ct => ct.class === "Text")
                   : [];
               })
-          ), wait(2300)]
-        ).then(texts => {
-          this.setState(
-            {
-              texts: texts.flat(1)
-            },
-            this.typeExcerpt
-          );
+          )
+        ]).then(texts => {
+          const sentences = arrayShuffle(textsToSentences(texts.flat(1).filter(Boolean)));
+          console.log(sentences);
+          this.setState({ sentences });
         });
       });
     });
+    */
   }
 
-  render(props, { excerpt, lastExcerptCharIndex, lastVisibleEssayIndex }) {
+  render(props, { sentences }) {
     return (
       <div>
-        <div class="excerpts m">
-          <div class={this.state.lastExcerptColor}>
-            {excerpt.map((char, index) => (
-              <span style={{ opacity: index <= lastExcerptCharIndex ? 1 : 0 }}>{char}</span>
-            ))}
-          </div>
-        </div>
-        <header class="xs uppercase">
-          <a>About</a>
-          <h1 class="s name">
-            Automatic <span class="amour">W</span>riting
-          </h1>
-          <a>Readings</a>
-        </header>
-        <main>
-          {essays.map((essay, index) => (
-            <Essay
-              essay={essay}
-              key={index}
-              style={{ opacity: index <= lastVisibleEssayIndex ? 1 : 0 }}
-            />
-          ))}
-        </main>
-        <footer class="xs uppercase">
-          <div>Autumn Semester 19/20</div>
-          <div>C&CS module</div>
-          <div>BHSAD (Britanka)</div>
-          <div>
-            developed by&nbsp;
-            <a href="https://sergeyzakharov.dev" target="_blank">
-              Sergey Zakharov
-            </a>
-          </div>
-          <div>
-            Taught and Designed by&nbsp;
-            <a href="https://ermolaeva.co" target="_blank">
-              Tanya Ermolaeva
-            </a>
-          </div>
-        </footer>
+        <Intro />
+        {sentences && (
+          <Excerpts id="first" items={sentences.slice(0, 10)} backgroundColor="#BBFF29" />
+        )}
+        <div style={{ height: 200 }}>spacer</div>
+        {sentences && (
+          <Excerpts id="second" items={sentences.slice(10, 20)} backgroundColor="#A954FF" />
+        )}
+        <div style={{ height: 600 }}>spacer</div>
       </div>
     );
   }
