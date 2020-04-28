@@ -92,7 +92,7 @@ const Excerpts = ({ id, items, backgroundColor }) => {
       {groups &&
         groups.map((group, groupIndex) => (
           <div
-            class={cn("px-4", { [styles.groupWithBg]: groupIndex % 2 !== 0 })}
+            class="px-4"
             style={{
               background: group.gradient || "transparent"
             }}
