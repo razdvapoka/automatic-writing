@@ -23,10 +23,12 @@ const ExcerptItem = ({
   itemIndex,
   ...rest
 }) => {
+  const [isTyped, setIsTyped] = useState(null);
   const regId = `${id}-${groupIndex}-${itemIndex}`;
   const ref = useRef();
 
   const type = useCallback(() => {
+    setIsTyped(true);
     registry[regId].interval = window.setInterval(() => {
       const { maxCharIndex, lastCharIndex } = registry[regId];
       if (lastCharIndex < maxCharIndex && ref.current) {
@@ -39,7 +41,7 @@ const ExcerptItem = ({
         window.clearInterval(registry[regId].interval);
       }
     }, 10);
-  }, [ref]);
+  }, [ref, setIsTyped]);
 
   const intersection = useIntersection(ref, {
     root: null,
@@ -48,10 +50,10 @@ const ExcerptItem = ({
   });
 
   useEffect(() => {
-    if (intersection && intersection.intersectionRatio === 1) {
+    if (!isTyped && intersection && intersection.intersectionRatio === 1) {
       type();
     }
-  }, [intersection]);
+  }, [intersection, isTyped]);
 
   useEffect(() => {
     registry[regId] = { maxCharIndex: sentence.length, lastCharIndex: -1 };
@@ -74,6 +76,31 @@ const ExcerptItem = ({
         ))}
       </span>
     </div>
+  );
+};
+
+const RefreshButton = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+  const intersection = useIntersection(ref, {
+    root: null,
+    rootMargin: "0px",
+    threshold: 1
+  });
+  useEffect(() => {
+    if (intersection) {
+      setIsVisible(intersection.intersectionRatio === 1);
+    }
+  }, [intersection]);
+  return (
+    <button
+      ref={ref}
+      class={cn("sticky utility right-0 overflow-hidden self-end mr-4 my-4", styles.refreshButton, {
+        [styles.refreshButtonVisible]: isVisible
+      })}
+    >
+      Refresh
+    </button>
   );
 };
 
@@ -113,7 +140,7 @@ const Excerpts = ({ id, items, backgroundColor }) => {
   }, [items, setGroups]);
 
   return (
-    <div class="xmAlt py-4" style={{ backgroundColor }}>
+    <div class="xmAlt py-4 relative" style={{ backgroundColor }}>
       {groups &&
         groups.map((group, groupIndex) => (
           <div
@@ -133,6 +160,9 @@ const Excerpts = ({ id, items, backgroundColor }) => {
             ))}
           </div>
         ))}
+      <div class="absolute left-0 top-0 w-full h-full flex justify-end">
+        <RefreshButton />
+      </div>
     </div>
   );
 };

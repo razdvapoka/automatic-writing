@@ -134,7 +134,7 @@ const initShader = () => {
 const Intro = () => {
   useEffect(initShader, []);
   return (
-    <div id="intro" class={cn(styles.intro, "pt-4 px-4 pb-20 relative")}>
+    <div id="intro" class={cn(styles.intro, "pt-4 px-4 relative pb-10")}>
       <canvas id="canvas" class={cn("absolute left-0 top-0 w-full h-full", styles.canvas)} />
       <header class="flex justify-between xs uppercase">
         <div class="w-1/3">
@@ -154,11 +154,8 @@ const Intro = () => {
         <div class="w-1/12" />
       </header>
       <div class="flex justify-end">
-        <p class={cn("w-7/12 xm mt-9 mb-12 text-darkgrey", styles.description)}>
-          A semester-long exploration of the realtionship between language, media and design. A
-          semester-long exploration of the realtionship between language, media and design. A
-          semester-long exploration of the realtionship between language, media and design. A
-          semester-long exploration of the realtionship between language, media and design.
+        <p class={cn("w-7/12 xm mt-9 text-darkgrey", styles.description)}>
+          A semester-long exploration of the realtionship between language, media and design.
         </p>
         <div class="w-1/12" />
       </div>

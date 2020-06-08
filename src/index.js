@@ -8,6 +8,7 @@ import { Component } from "preact";
 import Intro from "./components/intro";
 import Excerpts from "./components/excerpts";
 import data from "../assets/data.json";
+import React, { useState, useEffect, useCallback } from "react";
 
 const SPLIT_REGEX = /[^\.!\?]+[\.!\?]+/g;
 
@@ -95,17 +96,14 @@ const textsToSentences = texts => {
     .map(s => s.split(""));
 };
 
-export default class App extends Component {
-  state = {
-    sentences: null
-  };
-
-  componentDidMount() {
+const App = props => {
+  const [sentences, setSentences] = useState(null);
+  useEffect(() => {
     //this.setState({ sentences: data.sentences.map(s => s.split("")) });
 
     const storedSentences = window.localStorage.getItem("sentences");
     if (storedSentences) {
-      this.setState({ sentences: arrayShuffle(JSON.parse(storedSentences)) });
+      setSentences(arrayShuffle(JSON.parse(storedSentences)));
     } else {
       fetch(`https://api.are.na/v2/channels/txts-cuibefu45ra`)
         .then(cj => cj.json())
@@ -114,7 +112,7 @@ export default class App extends Component {
         })
         .then(texts => {
           const sentences = arrayShuffle(textsToSentences(texts.flat(1).filter(Boolean)));
-          this.setState({ sentences });
+          setSentences(sentences);
           window.localStorage.setItem("sentences", JSON.stringify(sentences));
         });
       /*
@@ -138,21 +136,21 @@ export default class App extends Component {
     });
     */
     }
-  }
+  }, []);
 
-  render(props, { sentences }) {
-    return (
-      <div>
-        <Intro />
-        {sentences && (
-          <Excerpts id="first" items={sentences.slice(0, 10)} backgroundColor="#BBFF29" />
-        )}
-        <div style={{ height: 200 }}>spacer</div>
-        {sentences && (
-          <Excerpts id="second" items={sentences.slice(10, 20)} backgroundColor="#A954FF" />
-        )}
-        <div style={{ height: 600 }}>spacer</div>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Intro />
+      {sentences && (
+        <Excerpts id="first" items={sentences.slice(0, 10)} backgroundColor="#BBFF29" />
+      )}
+      <div style={{ height: 200 }}>spacer</div>
+      {sentences && (
+        <Excerpts id="second" items={sentences.slice(10, 20)} backgroundColor="#A954FF" />
+      )}
+      <div style={{ height: 600 }}>spacer</div>
+    </div>
+  );
+};
+
+export default App;

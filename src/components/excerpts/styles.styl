@@ -2,3 +2,17 @@
 
 .excerpts
   padding: pxToRem(20) 0
+
+.refreshBox
+  bottom: pxToRem(40)
+
+.refreshButton
+  padding: pxToRem(11) pxToRem(44) pxToRem(12) pxToRem(43)
+  border-radius: pxToRem(60)
+  background: linear-gradient(180deg, #DCDADA 5.21%, #C4C4C4 36.98%, #C4C4C4 76.56%, #DEDADA 98.44%)
+  box-shadow: 0 pxToRem(4) pxToRem(14) rgba(0, 0, 0, 0.17)
+  bottom: pxToRem(20)
+  transition: opacity 0.3s ease
+  opacity: 0
+  &Visible
+    opacity: 1
