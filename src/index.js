@@ -105,7 +105,7 @@ export default class App extends Component {
 
     const storedSentences = window.localStorage.getItem("sentences");
     if (storedSentences) {
-      this.setState({ sentences: JSON.parse(storedSentences) });
+      this.setState({ sentences: arrayShuffle(JSON.parse(storedSentences)) });
     } else {
       fetch(`https://api.are.na/v2/channels/txts-cuibefu45ra`)
         .then(cj => cj.json())
