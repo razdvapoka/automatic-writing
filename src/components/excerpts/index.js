@@ -1,8 +1,10 @@
-import { useEffect, useRef, useCallback, useState } from "preact/hooks";
-import styles from "./styles.styl";
-import cn from "classnames";
-import { randomArrItem } from "../../utils";
+import { arrayShuffle } from "@adriantombu/array-shuffle";
 import { useIntersection } from "react-use";
+import { useMemo, useEffect, useRef, useCallback, useState } from "preact/hooks";
+import cn from "classnames";
+
+import { randomArrItem } from "../../utils";
+import styles from "./styles.styl";
 
 const BG_COLORS = ["darkgreyBG", "greyBG", "lightgreyBG"];
 
@@ -57,7 +59,7 @@ const ExcerptItem = ({
 
   useEffect(() => {
     registry[regId] = { maxCharIndex: sentence.length, lastCharIndex: -1 };
-  }, []);
+  }, [sentence]);
 
   return (
     <div
@@ -79,7 +81,7 @@ const ExcerptItem = ({
   );
 };
 
-const RefreshButton = () => {
+const RefreshButton = ({ handleClick }) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
   const intersection = useIntersection(ref, {
@@ -95,6 +97,7 @@ const RefreshButton = () => {
   return (
     <button
       ref={ref}
+      onClick={handleClick}
       class={cn("sticky utility right-0 overflow-hidden self-end mr-4 my-4", styles.refreshButton, {
         [styles.refreshButtonVisible]: isVisible
       })}
@@ -105,10 +108,19 @@ const RefreshButton = () => {
 };
 
 const Excerpts = ({ id, items, backgroundColor }) => {
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const refresh = () => {
+    setRefreshKey(refreshKey + 1);
+  };
+
   const [groups, setGroups] = useState(null);
+  const selectedItems = useMemo(() => {
+    return arrayShuffle(items).slice(0, 10);
+  }, [items, refreshKey]);
 
   useEffect(() => {
-    const groupItems = items.map(item => {
+    const groupItems = selectedItems.map(item => {
       const width = 60 + Math.random() * 40;
       const shift = Math.random() * (100 - width);
       const backgroundColor = randomArrItem(BG_COLORS);
@@ -137,10 +149,10 @@ const Excerpts = ({ id, items, backgroundColor }) => {
         };
       })
     );
-  }, [items, setGroups]);
+  }, [selectedItems, setGroups]);
 
   return (
-    <div class="xmAlt py-4 relative" style={{ backgroundColor }}>
+    <div class="xmAlt py-12 relative" style={{ backgroundColor }}>
       {groups &&
         groups.map((group, groupIndex) => (
           <div
@@ -152,7 +164,7 @@ const Excerpts = ({ id, items, backgroundColor }) => {
             {group.items.map((item, itemIndex) => (
               <ExcerptItem
                 id={id}
-                key={itemIndex}
+                key={`${refreshKey}-${itemIndex}`}
                 itemIndex={itemIndex}
                 groupIndex={groupIndex}
                 {...item}
@@ -161,7 +173,7 @@ const Excerpts = ({ id, items, backgroundColor }) => {
           </div>
         ))}
       <div class="absolute left-0 top-0 w-full h-full flex justify-end">
-        <RefreshButton />
+        <RefreshButton handleClick={refresh} />
       </div>
     </div>
   );

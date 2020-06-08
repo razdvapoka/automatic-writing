@@ -141,13 +141,9 @@ const App = props => {
   return (
     <div>
       <Intro />
-      {sentences && (
-        <Excerpts id="first" items={sentences.slice(0, 10)} backgroundColor="#BBFF29" />
-      )}
+      {sentences && <Excerpts id="first" items={sentences} backgroundColor="#BBFF29" />}
       <div style={{ height: 200 }}>spacer</div>
-      {sentences && (
-        <Excerpts id="second" items={sentences.slice(10, 20)} backgroundColor="#A954FF" />
-      )}
+      {sentences && <Excerpts id="second" items={sentences} backgroundColor="#A954FF" />}
       <div style={{ height: 600 }}>spacer</div>
     </div>
   );
