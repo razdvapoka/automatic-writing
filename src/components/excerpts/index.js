@@ -98,9 +98,13 @@ const RefreshButton = ({ handleClick }) => {
     <button
       ref={ref}
       onClick={handleClick}
-      class={cn("sticky utility right-0 overflow-hidden self-end mr-4 my-4", styles.refreshButton, {
-        [styles.refreshButtonVisible]: isVisible
-      })}
+      class={cn(
+        "z-20 sticky utility right-0 overflow-hidden self-end mr-4 my-4",
+        styles.refreshButton,
+        {
+          [styles.refreshButtonVisible]: isVisible
+        }
+      )}
     >
       Refresh
     </button>
@@ -156,7 +160,7 @@ const Excerpts = ({ id, items, backgroundColor }) => {
       {groups &&
         groups.map((group, groupIndex) => (
           <div
-            class="px-4"
+            class="px-4 relative z-10"
             style={{
               background: group.gradient || "transparent"
             }}
