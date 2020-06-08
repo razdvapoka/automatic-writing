@@ -3,6 +3,7 @@ import { useEffect, useState } from "preact/hooks";
 import styles from "./styles.styl";
 import cn from "classnames";
 import { Renderer, Program, Color, Mesh, Triangle } from "ogl";
+import { Link } from "preact-router/match";
 
 const vertex = `
   attribute vec2 uv;
@@ -49,7 +50,7 @@ float noise (in vec2 _st) {
 #define NUM_OCTAVES 3
 
 float fbm ( in vec2 _st) {
-    float v = 0.0;
+    float v = 0.2;
     float a = 0.5;
     vec2 shift = vec2(100.0);
     for (int i = 0; i < NUM_OCTAVES; ++i) {
@@ -136,7 +137,9 @@ const Intro = () => {
     <div id="intro" class={cn(styles.intro, "pt-4 px-4 pb-20 relative")}>
       <canvas id="canvas" class={cn("absolute left-0 top-0 w-full h-full", styles.canvas)} />
       <header class="flex justify-between xs uppercase">
-        <div class="w-1/3">automatic writing</div>
+        <div class="w-1/3">
+          <Link href="/">automatic writing</Link>
+        </div>
         <ul class="w-5/12">
           <li>Britanka [critical & contextual studies]</li>
           <li>BA(Hons) Graphic Design</li>

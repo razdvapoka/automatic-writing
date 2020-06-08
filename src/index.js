@@ -101,9 +101,23 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    this.setState({ sentences: data.sentences.map(s => s.split("")) });
+    //this.setState({ sentences: data.sentences.map(s => s.split("")) });
 
-    /*
+    const storedSentences = window.localStorage.getItem("sentences");
+    if (storedSentences) {
+      this.setState({ sentences: JSON.parse(storedSentences) });
+    } else {
+      fetch(`https://api.are.na/v2/channels/txts-cuibefu45ra`)
+        .then(cj => cj.json())
+        .then(channelCont => {
+          return channelCont.contents ? channelCont.contents.filter(ct => ct.class === "Text") : [];
+        })
+        .then(texts => {
+          const sentences = arrayShuffle(textsToSentences(texts.flat(1).filter(Boolean)));
+          this.setState({ sentences });
+          window.localStorage.setItem("sentences", JSON.stringify(sentences));
+        });
+      /*
     fetch("https://api.are.na/v2/channels/critical-digest").then(response => {
       response.json().then(content => {
         Promise.all([
@@ -118,12 +132,12 @@ export default class App extends Component {
           )
         ]).then(texts => {
           const sentences = arrayShuffle(textsToSentences(texts.flat(1).filter(Boolean)));
-          console.log(sentences);
           this.setState({ sentences });
         });
       });
     });
     */
+    }
   }
 
   render(props, { sentences }) {

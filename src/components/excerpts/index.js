@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback, useState } from "preact/hooks";
 import styles from "./styles.styl";
 import cn from "classnames";
 import { randomArrItem } from "../../utils";
+import { useIntersection } from "react-use";
 
 const BG_COLORS = ["darkgreyBG", "greyBG", "lightgreyBG"];
 
@@ -12,50 +13,74 @@ const chunk = (arr, size) =>
     arr.slice(i * size, i * size + size)
   );
 
-const Excerpts = ({ id, items, backgroundColor }) => {
+const ExcerptItem = ({
+  id,
+  width,
+  shift,
+  backgroundColor,
+  sentence,
+  groupIndex,
+  itemIndex,
+  ...rest
+}) => {
+  const regId = `${id}-${groupIndex}-${itemIndex}`;
   const ref = useRef();
-  const [isOnTop, setIsOnTop] = useState(false);
-  const [groups, setGroups] = useState(null);
 
   const type = useCallback(() => {
-    registry[id].interval = window.setInterval(() => {
-      const { maxCharIndex, lastCharIndex } = registry[id];
-      if (lastCharIndex < maxCharIndex) {
-        const itemElements = ref.current.querySelectorAll(`.sentence`);
-        itemElements.forEach(itemElement => {
-          const charElements = itemElement.querySelectorAll(`.char`);
-          charElements.forEach((charElement, charIndex) => {
-            charElement.style.opacity = charIndex <= lastCharIndex ? 1 : 0;
-          });
+    registry[regId].interval = window.setInterval(() => {
+      const { maxCharIndex, lastCharIndex } = registry[regId];
+      if (lastCharIndex < maxCharIndex && ref.current) {
+        const charElements = ref.current.querySelectorAll(`.char`);
+        charElements.forEach((charElement, charIndex) => {
+          charElement.style.opacity = charIndex <= lastCharIndex ? 1 : 0;
         });
-        registry[id].lastCharIndex++;
+        registry[regId].lastCharIndex++;
       } else {
-        window.clearInterval(registry[id].interval);
+        window.clearInterval(registry[regId].interval);
       }
     }, 10);
   }, [ref]);
 
-  const updateIsOnTop = useCallback(() => {
-    if (ref.current) {
-      const { top } = ref.current.getBoundingClientRect();
-      if (top <= 0) {
-        setIsOnTop(true);
-        type();
-        window.removeEventListener("scroll", updateIsOnTop);
-      }
-    }
-  }, [setIsOnTop, ref, type]);
+  const intersection = useIntersection(ref, {
+    root: null,
+    rootMargin: "0px",
+    threshold: 1
+  });
 
   useEffect(() => {
-    window.addEventListener("scroll", updateIsOnTop);
-    return () => {
-      window.removeEventListener("scroll", updateIsOnTop);
-    };
+    if (intersection && intersection.intersectionRatio === 1) {
+      type();
+    }
+  }, [intersection]);
+
+  useEffect(() => {
+    registry[regId] = { maxCharIndex: sentence.length, lastCharIndex: -1 };
   }, []);
 
+  return (
+    <div
+      ref={ref}
+      class="sentence"
+      style={{
+        width: `${width}%`,
+        marginLeft: `${shift}%`
+      }}
+    >
+      <span class={`text-darkgrey bg-${backgroundColor}`}>
+        {sentence.map((char, charIndex) => (
+          <span class="char opacity-0" key={`${groupIndex}-${itemIndex}-${charIndex}`}>
+            {char}
+          </span>
+        ))}
+      </span>
+    </div>
+  );
+};
+
+const Excerpts = ({ id, items, backgroundColor }) => {
+  const [groups, setGroups] = useState(null);
+
   useEffect(() => {
-    const newMaxCharIndex = Math.max(...items.map(item => item.length));
-    registry[id] = { maxCharIndex: newMaxCharIndex, lastCharIndex: -1 };
     const groupItems = items.map(item => {
       const width = 60 + Math.random() * 40;
       const shift = Math.random() * (100 - width);
@@ -88,7 +113,7 @@ const Excerpts = ({ id, items, backgroundColor }) => {
   }, [items, setGroups]);
 
   return (
-    <div class="xmAlt py-4" ref={ref} style={{ backgroundColor }}>
+    <div class="xmAlt py-4" style={{ backgroundColor }}>
       {groups &&
         groups.map((group, groupIndex) => (
           <div
@@ -98,22 +123,13 @@ const Excerpts = ({ id, items, backgroundColor }) => {
             }}
           >
             {group.items.map((item, itemIndex) => (
-              <div
+              <ExcerptItem
+                id={id}
                 key={itemIndex}
-                class="sentence"
-                style={{
-                  width: `${item.width}%`,
-                  marginLeft: `${item.shift}%`
-                }}
-              >
-                <span class={`text-darkgrey bg-${item.backgroundColor}`}>
-                  {item.sentence.map((char, charIndex) => (
-                    <span class="char opacity-0" key={`${groupIndex}-${itemIndex}-${charIndex}`}>
-                      {char}
-                    </span>
-                  ))}
-                </span>
-              </div>
+                itemIndex={itemIndex}
+                groupIndex={groupIndex}
+                {...item}
+              />
             ))}
           </div>
         ))}
