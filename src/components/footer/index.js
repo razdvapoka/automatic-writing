@@ -1,6 +1,11 @@
 import styles from "./styles.styl";
 import cn from "classnames";
 
+const getBoxPositionOnScreenCenter = (width, height) => ({
+  top: (window.screen.height - height) / 2,
+  left: (window.screen.width - width) / 2
+});
+
 const Footer = () => (
   <footer class={cn("px-4 pb-8 flex items-end xs uppercase", styles.footer)}>
     <div class="w-1/3">
@@ -40,7 +45,27 @@ const Footer = () => (
           Follow BHSAD instagram
         </a>
       </div>
-      <div class="mt-1">Share</div>
+      <button
+        class="mt-1 uppercase hover:text-acidgreen"
+        onClick={() => {
+          const params = {
+            height: 400,
+            width: 550,
+            ...getBoxPositionOnScreenCenter(400, 550)
+          };
+          const config = Object.keys(params)
+            .map(key => `${key}=${params[key]}`)
+            .join(", ");
+          window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${"https://automatic-writing.now.sh" ||
+              document.location}`,
+            "",
+            config
+          );
+        }}
+      >
+        Share
+      </button>
     </div>
   </footer>
 );

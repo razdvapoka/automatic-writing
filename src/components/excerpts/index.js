@@ -144,7 +144,7 @@ const Excerpts = ({ id, items, backgroundColor }) => {
         const gradient = `linear-gradient(270deg, #696969 0%, #CDCDCD ${first}%, #FDFDFD ${second}%, #DDDDDD ${third}%, #B4B4B4 100%)`;
         */
         const gradient =
-          Math.random() > 0.5
+          Math.random() > 0.8
             ? `linear-gradient(270deg, #696969 0%, #CDCDCD 30%, #FDFDFD 60%, #DDDDDD 80%, #B4B4B4 100%)`
             : null;
         return {
