@@ -1,11 +1,20 @@
 import { Component } from "preact";
+import { useEffect, useState } from "preact/hooks";
 import { Link } from "preact-router/match";
 import cn from "classnames";
+import FontFaceObserver from "fontfaceobserver";
 
 import Fog from "../fog";
 import styles from "./styles.styl";
 
 const Intro = () => {
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+  useEffect(() => {
+    const font = new FontFaceObserver("FKRasterGroteskCompact-Blended");
+    font.load().then(() => {
+      setIsFontLoaded(true);
+    });
+  }, []);
   return (
     <div id="intro" class={cn(styles.intro, "pt-4 relative pb-10")}>
       <Fog canvasId="canvas" parentId="intro" />
@@ -44,7 +53,12 @@ const Intro = () => {
         </p>
         <div class="w-1/12" />
       </div>
-      <h1 class="px-4 xxl uppercase text-lightgrey">
+      <h1
+        class={cn(
+          "max-w-full overflow-hidden px-4 xxl uppercase text-lightgrey",
+          isFontLoaded ? "opacity-100" : "opacity-0"
+        )}
+      >
         automatic
         <br />
         writing

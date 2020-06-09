@@ -46,7 +46,7 @@ const Footer = () => (
         </a>
       </div>
       <button
-        class="mt-1 uppercase hover:text-acidgreen"
+        class="pt-1 uppercase hover:text-acidgreen"
         onClick={() => {
           const params = {
             height: 400,

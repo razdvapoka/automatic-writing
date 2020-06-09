@@ -87,10 +87,14 @@ const App = props => {
   return (
     <div>
       <Intro />
-      {sentences && <Excerpts id="first" items={sentences} backgroundColor="#BBFF29" />}
-      <List listId="list-1" items={essays.slice(0, Math.floor(essays.length / 2))} />
-      {sentences && <Excerpts id="second" items={sentences} backgroundColor="#A954FF" />}
-      <List listId="list-2" items={essays.slice(Math.floor(essays.length / 2))} />
+      {sentences.length > 0 && <Excerpts id="first" items={sentences} backgroundColor="#BBFF29" />}
+      {essays.length > 0 && (
+        <List listId="list-1" items={essays.slice(0, Math.floor(essays.length / 2))} />
+      )}
+      {sentences.length > 0 && <Excerpts id="second" items={sentences} backgroundColor="#A954FF" />}
+      {essays.length > 0 && (
+        <List listId="list-2" items={essays.slice(Math.floor(essays.length / 2))} />
+      )}
       <Footer />
     </div>
   );
