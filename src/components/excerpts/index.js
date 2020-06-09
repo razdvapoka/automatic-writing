@@ -64,13 +64,13 @@ const ExcerptItem = ({
   return (
     <div
       ref={ref}
-      class="sentence"
+      class={cn("sentence", styles.sentence)}
       style={{
         width: `${width}%`,
         marginLeft: `${shift}%`
       }}
     >
-      <span class={`text-darkgrey bg-${backgroundColor}`}>
+      <span class={cn(`text-darkgrey bg-${backgroundColor}`)}>
         {sentence.map((char, charIndex) => (
           <span class="char opacity-0" key={`${groupIndex}-${itemIndex}-${charIndex}`}>
             {char}
@@ -120,12 +120,12 @@ const Excerpts = ({ id, items, backgroundColor }) => {
 
   const [groups, setGroups] = useState(null);
   const selectedItems = useMemo(() => {
-    return arrayShuffle(items).slice(0, 10);
+    return arrayShuffle(items).slice(0, 16);
   }, [items, refreshKey]);
 
   useEffect(() => {
     const groupItems = selectedItems.map(item => {
-      const width = 60 + Math.random() * 40;
+      const width = 40 + Math.random() * 40;
       const shift = Math.random() * (100 - width);
       const backgroundColor = randomArrItem(BG_COLORS);
       return {
@@ -160,7 +160,7 @@ const Excerpts = ({ id, items, backgroundColor }) => {
       {groups &&
         groups.map((group, groupIndex) => (
           <div
-            class="px-4 relative z-10"
+            class={cn("px-4 relative z-10", styles.group)}
             style={{
               background: group.gradient || "transparent"
             }}
