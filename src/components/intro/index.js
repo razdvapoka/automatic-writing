@@ -44,7 +44,7 @@ const Intro = () => {
         </p>
         <div class="w-1/12" />
       </div>
-      <h1 class="xxl uppercase text-lightgrey">
+      <h1 class="px-4 xxl uppercase text-lightgrey">
         automatic
         <br />
         writing
