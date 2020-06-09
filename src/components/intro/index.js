@@ -138,7 +138,9 @@ const Intro = () => {
       <canvas id="canvas" class={cn("absolute left-0 top-0 w-full h-full", styles.canvas)} />
       <header class="flex justify-between xs uppercase">
         <div class="w-1/3">
-          <Link href="/">automatic writing</Link>
+          <Link class={cn("fixed z-20", styles.title)} href="/">
+            automatic writing
+          </Link>
         </div>
         <ul class="w-5/12">
           <li>Britanka [critical & contextual studies]</li>
