@@ -1,0 +1,15 @@
+@import '../../styles/utils.styl'
+
+.essay + .essay
+  margin-top: pxToRem(40)
+
+.essay
+  transition: color 0.2s ease
+  :global(.view-essay)
+    transition: opacity 0.2s ease
+    opacity: 0
+
+.essay:hover
+  :global(.view-essay)
+    opacity: 1
+

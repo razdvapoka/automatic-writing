@@ -1,91 +1,21 @@
-import "defaults.css";
-import "./tailwind.css";
-import "./style.styl";
 import "array-flat-polyfill";
-import { memo } from "preact/compat";
-import { arrayShuffle } from "@adriantombu/array-shuffle";
+import "defaults.css";
+
+import "./style.styl";
+import "./tailwind.css";
+
 import { Component } from "preact";
-import Intro from "./components/intro";
-import Excerpts from "./components/excerpts";
-import data from "../assets/data.json";
+import { arrayShuffle } from "@adriantombu/array-shuffle";
+import { memo } from "preact/compat";
+
 import React, { useState, useEffect, useCallback } from "react";
 
-const SPLIT_REGEX = /[^\.!\?]+[\.!\?]+/g;
+import Excerpts from "./components/excerpts";
+import Intro from "./components/intro";
+import List from "./components/list";
+import data from "../assets/data.json";
 
-const essays = [
-  {
-    author: "Irina Evseenko",
-    title: `Form follows 'X':<br/><span class="amour">a</span>nalysis of a trope`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  },
-  {
-    author: "Nadezhda Vorobieva",
-    title: `Loading bars:<br/><span class="amour">d</span>esigning wait`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  },
-  {
-    author: "Lyudmila Petrova",
-    title: `Militant <span class="amour">a</span>esthetics<br/>and group identities`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  },
-  {
-    author: "Valeriia Ivanova",
-    title: `<span class="amour">M</span>imicry, transparency<br/>and repetition`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  },
-  {
-    author: "Anastasia Shmeleva",
-    title: `Design for <span class="amour">p</span>lay:<br/>from physical to&nbsp;digital environments`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  },
-  {
-    author: "Maria Kharmandarian",
-    title: `The <span class="amour">f</span>uture<br/>of language`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  },
-  {
-    author: "Elizaveta Stolyarova",
-    title: `Silicon <span class="amour">V</span>alley ideology and reception<br/>of modernism in web design`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  },
-  {
-    author: "Alexandra Kravtsova",
-    title: `3 cases of <span class="amour">p</span>ropaganda`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  },
-  {
-    author: "Alisa Kharas",
-    title: `New types of written <span class="amour">c</span>ommunication`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  },
-  {
-    author: "Maria Khegay",
-    title: `The role of social media in <span class="amour">b</span>ehavioral changes`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  },
-  {
-    author: "Ekaterina Slobodskaya",
-    title: `Irony and design:<br/><span class="amour">s</span>ubvertising aesthetics`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  },
-  {
-    author: "Eva Chudina",
-    title: `Make-up <span class="amour">a</span>rt:<br/>from beauty to body modification`,
-    slug: "essay-1",
-    shift: `${Math.floor(Math.random() * 50)}%`
-  }
-];
+const SPLIT_REGEX = /[^\.!\?]+[\.!\?]+/g;
 
 const textsToSentences = texts => {
   return texts
@@ -97,13 +27,16 @@ const textsToSentences = texts => {
 };
 
 const App = props => {
-  const [sentences, setSentences] = useState(null);
+  const [sentences, setSentences] = useState([]);
+  const [essays, setEssays] = useState([]);
   useEffect(() => {
     //this.setState({ sentences: data.sentences.map(s => s.split("")) });
 
-    const storedSentences = window.localStorage.getItem("sentences");
-    if (storedSentences) {
-      setSentences(arrayShuffle(JSON.parse(storedSentences)));
+    const storedData = window.localStorage.getItem("data");
+    if (storedData) {
+      const { sentences, essays } = JSON.parse(storedData);
+      setSentences(arrayShuffle(sentences));
+      setEssays(arrayShuffle(essays));
     } else {
       fetch(`https://api.are.na/v2/channels/txts-cuibefu45ra`)
         .then(cj => cj.json())
@@ -113,7 +46,17 @@ const App = props => {
         .then(texts => {
           const sentences = arrayShuffle(textsToSentences(texts.flat(1).filter(Boolean)));
           setSentences(sentences);
-          window.localStorage.setItem("sentences", JSON.stringify(sentences));
+
+          const essays = texts.map(text => {
+            const [name, slug] = text.title.split("|");
+            return {
+              slug,
+              name,
+              title: text.description
+            };
+          });
+          setEssays(essays);
+          window.localStorage.setItem("data", JSON.stringify({ sentences, essays }));
         });
       /*
     fetch("https://api.are.na/v2/channels/critical-digest").then(response => {
@@ -142,9 +85,9 @@ const App = props => {
     <div>
       <Intro />
       {sentences && <Excerpts id="first" items={sentences} backgroundColor="#BBFF29" />}
-      <div style={{ height: 200 }}>spacer</div>
+      <List listId="list-1" items={essays.slice(0, Math.floor(essays.length / 2))} />
       {sentences && <Excerpts id="second" items={sentences} backgroundColor="#A954FF" />}
-      <div style={{ height: 600 }}>spacer</div>
+      <List listId="list-2" items={essays.slice(Math.floor(essays.length / 2))} />
     </div>
   );
 };

@@ -42,7 +42,7 @@ const ExcerptItem = ({
       } else {
         window.clearInterval(registry[regId].interval);
       }
-    }, 10);
+    }, 20);
   }, [ref, setIsTyped]);
 
   const intersection = useIntersection(ref, {
