@@ -11,6 +11,7 @@ import { memo } from "preact/compat";
 import React, { useState, useEffect, useCallback } from "react";
 
 import Excerpts from "./components/excerpts";
+import Footer from "./components/footer";
 import Intro from "./components/intro";
 import List from "./components/list";
 import data from "../assets/data.json";
@@ -88,6 +89,7 @@ const App = props => {
       <List listId="list-1" items={essays.slice(0, Math.floor(essays.length / 2))} />
       {sentences && <Excerpts id="second" items={sentences} backgroundColor="#A954FF" />}
       <List listId="list-2" items={essays.slice(Math.floor(essays.length / 2))} />
+      <Footer />
     </div>
   );
 };

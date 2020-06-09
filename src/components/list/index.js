@@ -4,7 +4,7 @@ import cn from "classnames";
 
 const List = ({ items, listId }) => {
   return (
-    <div class="relative py-20 px-4" id={listId}>
+    <div class={cn("relative py-20 px-4", styles.list)} id={listId}>
       {items.length > 0 && <Fog parentId={listId} canvasId={`${listId}-canvas`} />}
       <ul>
         {items.map(({ name, slug, title }, itemIndex) => (
