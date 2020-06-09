@@ -99,7 +99,7 @@ const RefreshButton = ({ handleClick }) => {
       ref={ref}
       onClick={handleClick}
       class={cn(
-        "z-20 sticky utility right-0 overflow-hidden self-end mr-4 my-4",
+        "text-button z-20 sticky utility right-0 overflow-hidden self-end mr-4 my-4",
         styles.refreshButton,
         {
           [styles.refreshButtonVisible]: isVisible
