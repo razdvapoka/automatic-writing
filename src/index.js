@@ -37,7 +37,7 @@ const App = props => {
     if (storedData) {
       const { sentences, essays } = JSON.parse(storedData);
       setSentences(arrayShuffle(sentences));
-      setEssays(arrayShuffle(essays));
+      setEssays(essays);
     } else {
       fetch(`https://api.are.na/v2/channels/txts-cuibefu45ra`)
         .then(cj => cj.json())
@@ -48,14 +48,16 @@ const App = props => {
           const sentences = arrayShuffle(textsToSentences(texts.flat(1).filter(Boolean)));
           setSentences(sentences);
 
-          const essays = texts.map(text => {
-            const [name, slug] = text.title.split("|");
-            return {
-              slug,
-              name,
-              title: text.description
-            };
-          });
+          const essays = texts
+            .map(text => {
+              const [name, slug] = text.title.split("|");
+              return {
+                slug,
+                name,
+                title: text.description
+              };
+            })
+            .reverse();
           setEssays(essays);
           window.localStorage.setItem("data", JSON.stringify({ sentences, essays }));
         });

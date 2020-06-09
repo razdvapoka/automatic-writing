@@ -156,7 +156,7 @@ const Excerpts = ({ id, items, backgroundColor }) => {
   }, [selectedItems, setGroups]);
 
   return (
-    <div class="xmAlt py-12 relative" style={{ backgroundColor }}>
+    <div class={cn("xmAlt py-12 relative", styles.excerpts)} style={{ backgroundColor }}>
       {groups &&
         groups.map((group, groupIndex) => (
           <div
