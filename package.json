@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "preact build",
+    "build": "cross-env NODE_ENV=production preact build",
     "serve": "sirv build --cors --single",
     "dev": "preact watch",
     "lint": "eslint src"
@@ -16,6 +16,8 @@
     "build/*"
   ],
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^2.2.0",
+    "cross-env": "^7.0.2",
     "eslint": "^6.0.1",
     "eslint-config-synacor": "^3.0.4",
     "preact-cli": "^3.0.0-rc.6",
@@ -25,7 +27,6 @@
   },
   "dependencies": {
     "@adriantombu/array-shuffle": "^2.0.4",
-    "@fullhuman/postcss-purgecss": "^2.1.2",
     "array-flat-polyfill": "^1.0.1",
     "classnames": "^2.2.6",
     "defaults.css": "^1.2.0",
