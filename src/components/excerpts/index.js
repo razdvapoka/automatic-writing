@@ -159,11 +159,11 @@ const Excerpts = ({ id, items, backgroundColor }) => {
   }, [selectedItems, setGroups]);
 
   return (
-    <div class={cn("xmAlt py-12 relative", styles.excerpts)} style={{ backgroundColor }}>
+    <div class={cn("xmAlt py-12 sm:py-5 relative", styles.excerpts)} style={{ backgroundColor }}>
       {groups &&
         groups.map((group, groupIndex) => (
           <div
-            class={cn("px-4 relative z-10", styles.group)}
+            class={cn("px-4 sm:px-2 relative z-10", styles.group)}
             style={{
               background: group.gradient || "transparent"
             }}

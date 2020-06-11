@@ -7,12 +7,17 @@ const getBoxPositionOnScreenCenter = (width, height) => ({
 });
 
 const Footer = () => (
-  <footer class={cn("px-4 pb-8 flex items-end xs uppercase", styles.footer)}>
-    <div class="w-1/3">
+  <footer
+    class={cn(
+      "px-4 sm:px-2 pb-8 flex sm:flex-col sm:justify-end items-end xs uppercase",
+      styles.footer
+    )}
+  >
+    <div class="w-1/3 sm:w-full">
       <div>Brief set by Tanya Ermolaeva</div>
       <div class="mt-1">In collaboration with Sebastian Campos</div>
     </div>
-    <div class="w-5/12">
+    <div class="w-5/12 sm:w-full sm:mt-6">
       <div>
         <a
           class="hover:text-acidgreen"
@@ -34,7 +39,7 @@ const Footer = () => (
         </a>
       </div>
     </div>
-    <div class="w-1/4">
+    <div class="w-1/4 sm:w-full sm:mt-6">
       <div>
         <a
           class="hover:text-acidgreen"

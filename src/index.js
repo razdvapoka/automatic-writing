@@ -106,6 +106,8 @@ const App = props => {
         <List listId="list-2" items={essays.slice(Math.floor(essays.length / 2))} />
       )}
       <Footer />
+      {/*
+       */}
     </div>
   );
 };

@@ -6,6 +6,9 @@
   font-size: pxToRem(259)
   line-height: 0.9
   letter-spacing: 0.02em
+  +mobile()
+    font-size: pxToRem(98)
+    line-height: 0.94
 
 .xm
   font-family: FKRasterGrotesk-Blended, Helvetica, sans-serif
@@ -16,11 +19,16 @@
   font-family: FKRasterGrotesk-Blended, Helvetica, sans-serif
   font-size: pxToRem(24)
   line-height: 1.2
+  +mobile()
+    font-size: pxToRem(18)
+    line-height: 1.08
 
 .xs
   font-family: FKRasterGrotesk-Blended, Helvetica, sans-serif
   font-size: pxToRem(14)
   line-height: 0.9
+  +mobile()
+    line-height: (16 / 14)
 
 .utility
   font-family: ChopinScript, Helvetica, sans-serif

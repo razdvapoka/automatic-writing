@@ -16,10 +16,13 @@ const Intro = () => {
     });
   }, []);
   return (
-    <div id="intro" class={cn(styles.intro, "pt-4 relative pb-10")}>
+    <div id="intro" class={cn(styles.intro, "pt-4 sm:pt-3 relative pb-10 sm:pb-1")}>
       <Fog canvasId="canvas" parentId="intro" />
       <header
-        class={cn("z-50 fixed w-full px-4 flex justify-between xs uppercase", styles.fixedHeader)}
+        class={cn(
+          "sm:hidden z-50 fixed w-full px-4 flex justify-between xs uppercase",
+          styles.fixedHeader
+        )}
       >
         <div class="w-1/3">
           <Link href="/">automatic writing</Link>
@@ -34,7 +37,7 @@ const Intro = () => {
         </div>
         <div class="w-1/12" />
       </header>
-      <div class={cn("px-4 flex justify-between xs uppercase", styles.secondHeader)}>
+      <div class={cn("sm:hidden px-4 flex justify-between xs uppercase", styles.secondHeader)}>
         <div class="w-1/3"></div>
         <ul class="w-5/12">
           <li>BA(Hons) Graphic Design</li>
@@ -47,19 +50,33 @@ const Intro = () => {
         </div>
         <div class="w-1/12" />
       </div>
+      <div class="hidden sm:flex xs uppercase px-2">
+        <div class="w-1/2">
+          <Link class={cn("fixed", styles.mobileHomeLink)} href="/">
+            automatic writing
+          </Link>
+        </div>
+        <div class={cn("w-1/2", styles.headerCol)}>
+          <div>Britanka [critical & contextual studies]</div>
+          <div class="mt-2">BA(Hons) Graphic Design</div>
+          <div class="mt-2">Autumn + Winter 2019/2020</div>
+        </div>
+      </div>
       <div class="flex justify-end">
-        <p class={cn("w-7/12 xm mt-9 text-darkgrey", styles.description)}>
+        <p class={cn("w-7/12 sm:w-full sm:px-2 xm mt-9 sm:mt-6 text-darkgrey", styles.description)}>
           A semester-long exploration of the realtionship between language, media and design.
         </p>
-        <div class="w-1/12" />
+        <div class="w-1/12 sm:hidden" />
       </div>
       <h1
         class={cn(
-          "max-w-full overflow-hidden px-4 xxl uppercase text-lightgrey",
+          "max-w-full overflow-hidden px-4 sm:px-2 xxl uppercase text-lightgrey",
           isFontLoaded ? "opacity-100" : "opacity-0"
         )}
       >
-        automatic
+        auto
+        <br class="hidden sm:inline" />
+        matic
         <br />
         writing
       </h1>
