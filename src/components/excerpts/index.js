@@ -58,26 +58,29 @@ const ExcerptItem = ({
   }, [intersection, isTyped]);
 
   useEffect(() => {
-    registry[regId] = { maxCharIndex: sentence.length, lastCharIndex: -1 };
+    registry[regId] = { maxCharIndex: sentence.sentence.length, lastCharIndex: -1 };
   }, [sentence]);
 
   return (
-    <div
+    <a
       ref={ref}
-      class={cn("sentence", styles.sentence)}
+      class={cn("sentence block", styles.sentence)}
+      href={`https://ccs1920.github.io/automatic-writing/${sentence.slug}`}
+      rel="noopener noreferrer"
+      target="_blank"
       style={{
         width: `${width}%`,
         marginLeft: `${shift}%`
       }}
     >
       <span class={cn(`text-darkgrey bg-${backgroundColor}`)}>
-        {sentence.map((char, charIndex) => (
+        {sentence.sentence.map((char, charIndex) => (
           <span class="char opacity-0" key={`${groupIndex}-${itemIndex}-${charIndex}`}>
             {char}
           </span>
         ))}
       </span>
-    </div>
+    </a>
   );
 };
 

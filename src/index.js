@@ -19,20 +19,30 @@ import data from "../assets/data.json";
 const SPLIT_REGEX = /[^\.!\?]+[\.!\?]+/g;
 
 const textsToSentences = texts => {
-  return texts
-    .map(t => t.content)
-    .join("")
-    .match(SPLIT_REGEX)
-    .filter(s => s.split(/\s/g).length > 1)
-    .map(s => s.split(""));
+  const sentences = texts
+    .map(t => {
+      const [name, slug] = t.title.split("|");
+      return {
+        sentences: t.content
+          .match(SPLIT_REGEX)
+          .filter(sentence => sentence.split(/\s/g).length > 1),
+        slug
+      };
+    })
+    .reduce(
+      (agg, item) => [
+        ...agg,
+        ...item.sentences.map(sentence => ({ sentence: sentence.split(""), slug: item.slug }))
+      ],
+      []
+    );
+  return sentences;
 };
 
 const App = props => {
   const [sentences, setSentences] = useState([]);
   const [essays, setEssays] = useState([]);
   useEffect(() => {
-    //this.setState({ sentences: data.sentences.map(s => s.split("")) });
-
     const storedData = window.localStorage.getItem("data");
     if (storedData) {
       const { sentences, essays } = JSON.parse(storedData);
