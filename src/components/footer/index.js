@@ -43,11 +43,11 @@ const Footer = () => (
       <div>
         <a
           class="hover:text-acidgreen"
-          href="https://www.instagram.com/bhsad/"
+          href="https://www.instagram.com/graphicdesign_bhsad"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Follow BHSAD instagram
+          Follow BHSAD GD instagram
         </a>
       </div>
       <button
