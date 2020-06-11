@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "cross-env NODE_ENV=production preact build --template src/template.html",
+    "postbuild": "cp -r assets/* build/assets",
     "serve": "sirv build --cors --single",
     "dev": "preact watch --template src/template.html",
     "lint": "eslint src"
