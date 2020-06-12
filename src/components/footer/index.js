@@ -31,7 +31,7 @@ const Footer = () => (
       <div class="mt-1">
         <a
           class="hover:text-acidgreen"
-          href="https://emolaeva.co"
+          href="https://ermolaeva.co"
           target="_blank"
           rel="noopener noreferrer"
         >
